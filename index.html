@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Small Pause Before Everything</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #E7E0D8;
+      --card: #F4EBE9;
+      --accent: #67869A;
+      --accent-soft: #C6D1D9;
+      --text-main: #4A3F35;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .page {
+      display: none;
+      width: 100%;
+      max-width: 520px;
+      padding: 40px 24px;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .page.active { display: block; }
+
+    .card {
+      background: var(--card);
+      padding: 40px 32px;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--accent);
+      margin-top: 0;
+      margin-bottom: 24px;
+    }
+
+    p { line-height: 1.6; margin-bottom: 20px; }
+
+    button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 12px 26px;
+      border-radius: 999px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    button:hover { transform: translateY(-2px); opacity: 0.9; }
+
+    .choice-btn {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--text-main);
+      margin: 6px;
+    }
+
+    .heart {
+      font-size: 48px;
+      cursor: pointer;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .hidden { display: none; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <audio id="bgMusic" loop>
+    <source src="arz-kiya-hai.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="page active" id="page1">
+    <div class="card">
+      <h1>A Small Pause Before Everything</h1>
+      <h2>Please read this without rushing, and find a comfortable place.</h2>
+      <p><strong>This is not just a letter.</strong><br>It’s a small space I made before you read what truly matters.<br>Take a breath — there’s no rush here.</p>
+      <button onclick="goToPage(2)">take me there</button>
+    </div>
+  </div>
+
+  <div class="page" id="page2">
+    <div class="card" id="game1">
+      <h1>Before we go further…</h1>
+      <h2>Let’s start with something simple.</h2>
+      <p>Tap the heart three times.</p>
+      <div class="heart" onclick="tapHeart()">❤️</div>
+      <p id="heartText" class="hidden">Okay. That was easy.<br>Thank you for staying.</p>
+    </div>
+
+    <div class="card hidden" id="game2">
+      <h1>One small question.</h1>
+      <h2>Answer honestly. There’s no right or wrong.</h2>
+      <p>How do you feel right now?</p>
+      <button class="choice-btn" onclick="finishGame2()">Calm</button>
+      <button class="choice-btn" onclick="finishGame2()">A little tired</button>
+      <button class="choice-btn" onclick="finishGame2()">Not sure yet</button>
+    </div>
+
+    <div class="card hidden" id="game3">
+      <h1>One last thing.</h1>
+      <h2>Answer this honestly.</h2>
+      <p><strong>When things get hard, what would you choose?</strong></p>
+      <button class="choice-btn" onclick="stayChoice()">Stay and try</button>
+      <button class="choice-btn" onclick="runChoice()">Run away</button>
+      <p id="choiceText"></p>
+      <button id="continueBtn" class="hidden" onclick="goToPage(3)">Continue</button>
+    </div>
+  </div>
+
+  <div class="page" id="page3">
+    <div class="card">
+      <h1>This is the letter I wrote for you,<br>what I couldn’t say out loud.</h1>
+      <h2>Please read it slowly, take your time.</h2>
+      <p>I wrote this by hand,<br>because some things feel more honest that way.</p>
+      <button onclick="window.open('https://drive.google.com/', '_blank')">Open the letter</button>
+      <p style="font-size:12px; opacity:0.7; margin-top:12px;">You can come back here after you’re done.</p>
+      <button onclick="goToPage(4)">Continue</button>
+    </div>
+  </div>
+
+  <div class="page" id="page4">
+    <div class="card">
+      <h1>Before you go</h1>
+      <p>Thank you for taking the time to read this.<br>I didn’t write it to ask for answers.<br>I wrote it to be honest, and to leave space for whatever comes next.</p>
+      <h2>Whatever you feel after this is okay.</h2>
+      <button onclick="showFortune()">Open a fortune</button>
+      <p id="fortuneText"></p>
+      <p style="font-size:12px; opacity:0.6; margin-top:20px;">With love, always.</p>
+    </div>
+  </div>
+
+  <script>
+    let heartCount = 0;
+    const bgMusic = document.getElementById('bgMusic');
+
+    function startMusic() {
+      bgMusic.volume = 0;
+      bgMusic.play();
+      let vol = 0;
+      const fadeIn = setInterval(() => {
+        if (vol < 0.18) {
+          vol += 0.01;
+          bgMusic.volume = vol;
+        } else {
+          clearInterval(fadeIn);
+        }
+      }, 200);
+    }
+
+    function fadeDownMusic() {
+      let vol = bgMusic.volume;
+      const fadeOut = setInterval(() => {
+        if (vol > 0.08) {
+          vol -= 0.01;
+          bgMusic.volume = vol;
+        } else {
+          clearInterval(fadeOut);
+        }
+      }, 200);
+    }
+
+    function goToPage(num) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page' + num).classList.add('active');
+      if (num === 2) startMusic();
+      if (num === 4) fadeDownMusic();
+    }
+
+    function tapHeart() {
+      heartCount++;
+      const heart = document.querySelector('.heart');
+      heart.style.transform = `scale(${1 + heartCount * 0.1})`;
+      if (heartCount === 3) {
+        document.getElementById('heartText').classList.remove('hidden');
+        setTimeout(() => {
+          document.getElementById('game1').classList.add('hidden');
+          document.getElementById('game2').classList.remove('hidden');
+        }, 1000);
+      }
+    }
+
+    function finishGame2() {
+      document.getElementById('game2').classList.add('hidden');
+      document.getElementById('game3').classList.remove('hidden');
+    }
+
+    function stayChoice() {
+      document.getElementById('choiceText').innerHTML = "That’s what I choose too.<br>Not because it was easy,<br>but because you matter.";
+      document.getElementById('continueBtn').classList.remove('hidden');
+    }
+
+    function runChoice() {
+      document.getElementById('choiceText').innerHTML = "Running is human.<br>But staying…<br>bro, I forced you to stay hahahah.";
+    }
+
+    function showFortune() {
+      const fortunes = [
+        'Some things don’t need to be rushed.',
+        'Staying is sometimes braver than leaving.',
+        'Honesty is a quiet kind of courage.',
+        'Take your time. This isn’t the end of anything.',
+        'Real things grow slowly.'
+      ];
+      const random = fortunes[Math.floor(Math.random() * fortunes.length)];
+      document.getElementById('fortuneText').innerText = random;
+    }
+  </script>
+
+</body>
+</html>
