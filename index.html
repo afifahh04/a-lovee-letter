@@ -111,9 +111,7 @@
       <h1>A Small Pause Before Everything</h1>
       <h2>Please read this without rushing, and find a comfortable place.</h2>
       <p><strong>This is not just a letter.</strong><br>It’s a small space I made before you read what truly matters.<br>Take a breath — there’s no rush here.</p>
-      <button onclick=goToPage(2);">
-  take me there
-</button>
+      <button onclick="goToPage(2)">take me there</button>
     </div>
   </div>
 
@@ -168,81 +166,7 @@
     </div>
   </div>
 
-  <script>
-    let heartCount = 0;
-    const bgMusic = document.getElementById('bgMusic');
+  
 
-    function startMusic() {
-      bgMusic.volume = 0;
-      bgMusic.play();
-      let vol = 0;
-      const fadeIn = setInterval(() => {
-        if (vol < 0.18) {
-          vol += 0.01;
-          bgMusic.volume = vol;
-        } else {
-          clearInterval(fadeIn);
-        }
-      }, 200);
-    }
-
-    function fadeDownMusic() {
-      let vol = bgMusic.volume;
-      const fadeOut = setInterval(() => {
-        if (vol > 0.08) {
-          vol -= 0.01;
-          bgMusic.volume = vol;
-        } else {
-          clearInterval(fadeOut);
-        }
-      }, 200);
-    }
-
-    function goToPage(num) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('page' + num).classList.add('active');
-      if (num === 2) startMusic();
-      if (num === 4) fadeDownMusic();
-    }
-
-    function tapHeart() {
-      heartCount++;
-      const heart = document.querySelector('.heart');
-      heart.style.transform = `scale(${1 + heartCount * 0.1})`;
-      if (heartCount === 3) {
-        document.getElementById('heartText').classList.remove('hidden');
-        setTimeout(() => {
-          document.getElementById('game1').classList.add('hidden');
-          document.getElementById('game2').classList.remove('hidden');
-        }, 1000);
-      }
-    }
-
-    function finishGame2() {
-      document.getElementById('game2').classList.add('hidden');
-      document.getElementById('game3').classList.remove('hidden');
-    }
-
-    function stayChoice() {
-      document.getElementById('choiceText').innerHTML = "That’s what I choose too.<br>Not because it was easy,<br>but because you matter.";
-      document.getElementById('continueBtn').classList.remove('hidden');
-    }
-
-    function runChoice() {
-      document.getElementById('choiceText').innerHTML = "Running is human.<br>But staying…<br>bro, I forced you to stay hahahah.";
-    }
-
-    function showFortune() {
-      const fortunes = [
-        'Some things don’t need to be rushed.',
-        'Staying is sometimes braver than leaving.',
-        'Honesty is a quiet kind of courage.',
-        'Take your time. This isn’t the end of anything.',
-        'Real things grow slowly.'
-      ];
-      const random = fortunes[Math.floor(Math.random() * fortunes.length)];
-      document.getElementById('fortuneText').innerText = random;
-    }
-</script>
 </body>
 </html>
